@@ -1,7 +1,7 @@
-# SOBackup — A Safety Net for Unity ScriptableObjects
+# SOBackupRestore — A Safety Net for Unity ScriptableObjects
 **Stop losing data on refactors with a GUID-based JSON backup & restore workflow**
 
-SOBackup is an **Editor-only** utility I use to protect **ScriptableObject** data during schema changes. It backs up assets to **pretty-printed JSON** (named by asset **GUID**) and restores values later via `EditorJsonUtility.FromJsonOverwrite`, with an optional **field-name remap** (oldKey → newKey) to survive aggressive renames.
+SOBackupRestore is an **Editor-only** utility I use to protect **ScriptableObject** data during schema changes. It backs up assets to **pretty-printed JSON** (named by asset **GUID**) and restores values later via `EditorJsonUtility.FromJsonOverwrite`, with an optional **field-name remap** (oldKey → newKey) to survive aggressive renames.
 
 > Built by a Unity game developer, for fellow Unity devs who iterate fast and refuse to lose content.
 
@@ -10,7 +10,7 @@ SOBackup is an **Editor-only** utility I use to protect **ScriptableObject** dat
 ## Why
 Unity serializes by **field name**. Rename a `[SerializeField]`, change a type, or move classes around and your `.asset` data can “disappear” from the Inspector. Attributes like `[FormerlySerializedAs]` and `[MovedFrom]` help (use them!), but large refactors and multi-branch merges still benefit from a **belt-and-suspenders** approach.
 
-SOBackup gives you a simple, inspectable, versionable **JSON snapshot** per asset that you can safely restore after the dust settles.
+SOBackupRestore gives you a simple, inspectable, versionable **JSON snapshot** per asset that you can safely restore after the dust settles.
 
 ---
 
@@ -24,7 +24,7 @@ SOBackup gives you a simple, inspectable, versionable **JSON snapshot** per asse
 
 ## Quick Start
 1. **Install**
-   - Drop `SOBackup.cs` into any `.../Editor/` folder (e.g., `Assets/Tools/Editor/`).
+   - Drop `SOBackupRestore.cs` into any `.../Editor/` folder (e.g., `Assets/Tools/Editor/`).
    - No package or asmdef required (unless you prefer an editor-only asmdef).
 
 2. **Backup**
@@ -37,10 +37,10 @@ SOBackup gives you a simple, inspectable, versionable **JSON snapshot** per asse
    - Prefer adding `[FormerlySerializedAs]` / `[MovedFrom]` where feasible.
 
 4. **(Optional) Field-name remap**
-   - Edit the `keyRenames` dictionary inside `SOBackup` to map old → new field names before restoring.
+   - Edit the `keyRenames` dictionary inside `SOBackupRestore` to map old → new field names before restoring.
 
    ```csharp
-   // Example remap (inside SOBackup before restore)
+   // Example remap (inside SOBackupRestore before restore)
    var keyRenames = new Dictionary<string, string>
    {
        { "damage",      "baseDamage" },
@@ -98,5 +98,5 @@ MIT. Use it, tweak it, ship it.
 ## Credits
 Created for my game project **Contrappasso** to move faster without losing ScriptableObject data. If this saved you a headache, consider a ⭐ and share improvements!
 * **GitHub repo**: https://github.com/Ryadel/SOBackupRestore/
-* **Docs, demo and examples**: https://www.ryadel.com/en/backup-restore-scriptableobjects-json-unity-editor/
+* **Docs, demo and examples**: https://www.ryadel.com/en/sobackuprestore-backup-restore-scriptableobjects-json-unity-editor/
 
