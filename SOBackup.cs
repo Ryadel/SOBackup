@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 /// and asset references (guid/fileID).
 /// 
 /// GitHub repo: https://github.com/Ryadel/SOBackup/
-/// demo and examples: https://www.ryadel.com/en/SOBackup-backup-restore-scriptableobjects-json-unity-editor/
+/// demo and examples: https://www.ryadel.com/en/sobackup-backup-restore-scriptableobjects-json-unity-editor/
 /// </summary>
 /// <remarks>
 /// - Usage (Editor menu):
