@@ -13,11 +13,13 @@ using System.Text.RegularExpressions;
 /// serialization via EditorJsonUtility, preserving [SerializeField], lists, enums,
 /// and asset references (guid/fileID).
 /// 
-/// GitHub repo: https://github.com/Ryadel/SOBackupRestore/
-/// demo and examples: https://www.ryadel.com/en/backup-restore-scriptableobjects-json-unity-editor/
+/// GitHub repo: https://github.com/Ryadel/SOBackup/
+/// demo and examples: https://www.ryadel.com/en/SOBackup-backup-restore-scriptableobjects-json-unity-editor/
 /// </summary>
 /// <remarks>
-/// - Usage (Editor menu): Tools/Contrappasso/Backup ScriptableObjects to JSON… / Restore…
+/// - Usage (Editor menu):
+///     - Tools/SOBackup/Backup
+///     - Tools/SOBackup/Restore
 /// - Place this script under any "Editor" folder (or an editor-only asmdef).
 /// - Restore overwrites values on existing assets and marks them dirty; it does not create new assets.
 /// - Non-serialized members (static, [NonSerialized], computed properties) are not included.
@@ -31,11 +33,11 @@ using System.Text.RegularExpressions;
 /// // Restore values from a folder of {GUID}.json files into existing assets
 /// // Menu: Tools/Restore ScriptableObjects from JSON…
 /// </example>
-public static class SOBackupRestore
+public static class SOBackup
 {
-    private const string DefaultBackupFolderName = "_SO_JSON_Backup";
+    private const string DefaultBackupFolderName = "_SOBackup";
 
-    [MenuItem("Tools/Backup ScriptableObjects to JSON...")]
+    [MenuItem("Tools/SOBackup/Backup")]
     public static void BackupAllSOToJson()
     {
         // Decide input folders: selected folders or entire Assets
@@ -52,7 +54,7 @@ public static class SOBackupRestore
         var guids = AssetDatabase.FindAssets("t:ScriptableObject", inputFolders);
         if (guids.Length == 0)
         {
-            EditorUtility.DisplayDialog("SO JSON Backup", "No ScriptableObjects found in the selected scope.", "OK");
+            EditorUtility.DisplayDialog("SOBackup", "No ScriptableObjects found in the selected scope.", "OK");
             return;
         }
 
@@ -82,11 +84,11 @@ public static class SOBackupRestore
             EditorUtility.ClearProgressBar();
         }
 
-        EditorUtility.DisplayDialog("SO JSON Backup", $"Backed up {count} ScriptableObjects to:\n{outputFolder}", "OK");
-        Debug.Log($"[SOJsonBackup] Backed up {count} assets to {outputFolder}");
+        EditorUtility.DisplayDialog("SOBackup", $"Backed up {count} ScriptableObjects to:\n{outputFolder}", "OK");
+        Debug.Log($"[SOBackup] Backed up {count} assets to {outputFolder}");
     }
 
-    [MenuItem("Tools/Contrappasso/Restore ScriptableObjects from JSON...")]
+    [MenuItem("Tools/SOBackup/Restore")]
     public static void RestoreAllSOFromJson()
     {
         string inputFolder = EditorUtility.OpenFolderPanel("Choose folder containing JSON backups", Application.dataPath + "/..", DefaultBackupFolderName);
@@ -104,7 +106,7 @@ public static class SOBackupRestore
         var files = Directory.GetFiles(inputFolder, "*.json", SearchOption.TopDirectoryOnly);
         if (files.Length == 0)
         {
-            EditorUtility.DisplayDialog("SO JSON Restore", "No .json files found in the selected folder.", "OK");
+            EditorUtility.DisplayDialog("SOBackup", "No .json files found in the selected folder.", "OK");
             return;
         }
 
@@ -119,21 +121,21 @@ public static class SOBackupRestore
                 string guid = Path.GetFileNameWithoutExtension(file);
                 if (!IsGuid(guid))
                 {
-                    Debug.LogWarning($"[SOJsonBackup] Skipping JSON without GUID filename: {file}");
+                    Debug.LogWarning($"[SOBackup] Skipping JSON without GUID filename: {file}");
                     continue;
                 }
 
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid);
                 if (string.IsNullOrEmpty(assetPath))
                 {
-                    Debug.LogWarning($"[SOJsonBackup] No asset found for GUID {guid}. Skipping {file}");
+                    Debug.LogWarning($"[SOBackup] No asset found for GUID {guid}. Skipping {file}");
                     continue;
                 }
 
                 var so = AssetDatabase.LoadAssetAtPath<ScriptableObject>(assetPath);
                 if (so == null)
                 {
-                    Debug.LogWarning($"[SOJsonBackup] Asset at path {assetPath} is not a ScriptableObject. Skipping.");
+                    Debug.LogWarning($"[SOBackup] Asset at path {assetPath} is not a ScriptableObject. Skipping.");
                     continue;
                 }
 
@@ -155,8 +157,8 @@ public static class SOBackupRestore
         }
 
         AssetDatabase.SaveAssets();
-        EditorUtility.DisplayDialog("SO JSON Restore", $"Restored {restored} ScriptableObjects from:\n{inputFolder}", "OK");
-        Debug.Log($"[SOJsonBackup] Restored {restored} assets from {inputFolder}");
+        EditorUtility.DisplayDialog("SOBackup", $"Restored {restored} ScriptableObjects from:\n{inputFolder}", "OK");
+        Debug.Log($"[SOBackup] Restored {restored} assets from {inputFolder}");
     }
 
     private static string[] GetSelectedProjectFoldersOrAssetsRoot()
