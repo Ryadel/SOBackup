@@ -98,5 +98,5 @@ MIT. Use it, tweak it, ship it.
 ## Credits
 Created for my game project **Contrappasso** to move faster without losing ScriptableObject data. If this saved you a headache, consider a ⭐ and share improvements!
 * **GitHub repo**: https://github.com/Ryadel/SOBackup/
-* **Docs, demo and examples**: https://www.ryadel.com/en/SOBackup-backup-restore-scriptableobjects-json-unity-editor/
+* **Docs, demo and examples**: https://www.ryadel.com/en/sobackup-backup-restore-scriptableobjects-json-unity-editor/
 
